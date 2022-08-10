@@ -105,7 +105,7 @@ function App() {
   function renderSweatersTable() {
     return (
       <div className="table-responsive mt-5 ">
-        <table className="table">
+        <table className="table table-bordered border-dark">
           <thead>
             <tr>
               <th scope="col">SweaterId (PK)</th>
