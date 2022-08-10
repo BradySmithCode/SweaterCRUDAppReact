@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import Constants from "./utilities/Constants";
 import SweaterCreateForm from "./components/SweaterCreateForm";
 import SweaterUpdateForm from "./components/SweaterUpdateForm";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 function App() {
   const [sweaters, setSweaters] = useState([]);
@@ -47,36 +51,52 @@ function App() {
   }, []);
 
   return (
-    <div className="container">
-      <div className="row min-vh-100">
-        <div className="col d-flex flex-column justify-content-center align-items-center">
-          {showingCreateNewSweaterForm === false &&
-            sweaterCurrentlyBeingUpdated === null && (
-              <div>
-                <button
-                  onClick={() => setShowingCreateNewSweaterForm(true)}
-                  className="btn btn-dark btn-lg w-100 mt-4"
-                >
-                  Create New Sweater
-                </button>
-              </div>
+    <div>
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand href="">
+            <h1>Sweaters.inc DATABASE</h1>
+          </Navbar.Brand>
+          <Navbar.Collapse className="justify-content-end">
+            <Navbar.Text>
+              <h5>
+                Signed in as: <a href="">Admin</a>
+              </h5>
+            </Navbar.Text>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <div className="container">
+        <div className="row">
+          <div className="col d-flex flex-column justify-content-center align-items-center">
+            {showingCreateNewSweaterForm === false &&
+              sweaterCurrentlyBeingUpdated === null && (
+                <div>
+                  <button
+                    onClick={() => setShowingCreateNewSweaterForm(true)}
+                    className="btn btn-dark btn-lg w-100 mt-4"
+                  >
+                    Create New Sweater
+                  </button>
+                </div>
+              )}
+
+            {sweaters.length > 0 &&
+              showingCreateNewSweaterForm === false &&
+              sweaterCurrentlyBeingUpdated === null &&
+              renderSweatersTable()}
+
+            {showingCreateNewSweaterForm && (
+              <SweaterCreateForm onSweaterCreated={onSweaterCreated} />
             )}
 
-          {sweaters.length > 0 &&
-            showingCreateNewSweaterForm === false &&
-            sweaterCurrentlyBeingUpdated === null &&
-            renderSweatersTable()}
-
-          {showingCreateNewSweaterForm && (
-            <SweaterCreateForm onSweaterCreated={onSweaterCreated} />
-          )}
-
-          {sweaterCurrentlyBeingUpdated !== null && (
-            <SweaterUpdateForm
-              sweater={sweaterCurrentlyBeingUpdated}
-              onSweaterUpdated={onSweaterUpdated}
-            />
-          )}
+            {sweaterCurrentlyBeingUpdated !== null && (
+              <SweaterUpdateForm
+                sweater={sweaterCurrentlyBeingUpdated}
+                onSweaterUpdated={onSweaterUpdated}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -84,8 +104,8 @@ function App() {
 
   function renderSweatersTable() {
     return (
-      <div className="table-responsive mt-5">
-        <table className="table table-bordered border-dark">
+      <div className="table-responsive mt-5 ">
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">SweaterId (PK)</th>
@@ -94,7 +114,7 @@ function App() {
               <th scope="col">CRUD Operations</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {sweaters.map((sweater) => (
               <tr key={sweater.sweaterId}>
                 <th scope="row">{sweater.sweaterId}</th>
@@ -103,7 +123,7 @@ function App() {
                 <td>
                   <button
                     onClick={() => setSweaterCurrentlyBeingUpdated(sweater)}
-                    className="btn btn-dark btn-lg mx-3 my-3"
+                    className="btn btn-success btn-lg mx-3 my-3"
                   >
                     Update
                   </button>
@@ -116,7 +136,7 @@ function App() {
                       )
                         deleteSweater(sweater.sweaterId);
                     }}
-                    className="btn btn-secondary btn-lg"
+                    className="btn btn-danger btn-lg"
                   >
                     Delete
                   </button>
